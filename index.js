@@ -23,6 +23,10 @@
         return isNaN(Number(v)) ? v : Number(v);
     }
 
+    function betterIsNaN(v) {
+        return v != v;
+    }
+
     return function compareVersions(v1, v2) {
         var s1 = split(v1);
         var s2 = split(v2);
@@ -31,10 +35,16 @@
             var n1 = parseInt(s1[i] || 0, 10);
             var n2 = parseInt(s2[i] || 0, 10);
 
+            // if we can't parse it as a number, fall back to string > and <
+            if (betterIsNaN(n1) || betterIsNaN(n2)) {
+                if (s1[i] > s2[i]) return 1;
+                if (s2[i] > s1[i]) return -1;
+                return 0;
+            }
+
             if (n1 > n2) return 1;
             if (n2 > n1) return -1;
         }
-
         if ([s1[2], s2[2]].every(patch.test.bind(patch))) {
             var p1 = patch.exec(s1[2])[1].split('.').map(tryParse);
             var p2 = patch.exec(s2[2])[1].split('.').map(tryParse);
