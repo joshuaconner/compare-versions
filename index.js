@@ -34,9 +34,15 @@
         for (var i = 0; i < 3; i++) {
             var n1 = parseInt(s1[i] || 0, 10);
             var n2 = parseInt(s2[i] || 0, 10);
+            var s1i = s1[i];
+            var s2i = s2[i];
 
             // if we can't parse it as a number, fall back to string > and <
             if (betterIsNaN(n1) || betterIsNaN(n2)) {
+                if (s1i === 'x' || s2i === 'x') {
+                    return 0;
+                }
+
                 if (s1[i] > s2[i]) return 1;
                 if (s2[i] > s1[i]) return -1;
                 return 0;

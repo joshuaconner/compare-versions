@@ -67,4 +67,9 @@ describe('compare versions', function () {
             assert.notEqual(compare('1.0', 'foo'), 0);
         });
     });
+
+    it('compares versions with wildcards', function () {
+        assert.equal(compare('1.1.1', '1.1.x'), 0);
+        assert.equal(compare('1.1.1', '1.x'), 0);
+    });
 });
